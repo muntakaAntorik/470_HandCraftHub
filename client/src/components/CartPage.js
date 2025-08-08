@@ -1,5 +1,4 @@
-    // client/src/components/CartPage.js
-
+ 
     import React, { useEffect, useState } from 'react';
     import axios from 'axios';
     import { useAuth } from '../context/AuthContext';
@@ -14,7 +13,7 @@
 
       useEffect(() => {
         if (!isLoggedIn) {
-          navigate('/login'); // Redirect to login if not logged in
+          navigate('/login');
           return;
         }
 
@@ -40,8 +39,7 @@
       }, [isLoggedIn, token, navigate]);
 
       const updateQuantity = async (productId, newQuantity) => {
-        if (newQuantity < 0) return; // Prevent negative quantity
-
+        if (newQuantity < 0) return; 
         try {
           const config = {
             headers: {

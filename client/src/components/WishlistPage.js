@@ -1,4 +1,3 @@
-    // client/src/components/WishlistPage.js
 
     import React, { useEffect, useState } from 'react';
     import axios from 'axios';
@@ -11,14 +10,14 @@
       const [wishlistItems, setWishlistItems] = useState([]);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState('');
-      const [newProductName, setNewProductName] = useState(''); // For adding new item
+      const [newProductName, setNewProductName] = useState(''); 
 
       useEffect(() => {
         const fetchWishlist = async () => {
           try {
             setLoading(true);
             setError('');
-            // Fetch all wishlist items (public view)
+        
             const res = await axios.get('http://localhost:5000/api/wishlist/all');
             setWishlistItems(res.data);
             setLoading(false);
@@ -30,7 +29,7 @@
         };
 
         fetchWishlist();
-      }, []); // Empty dependency array to fetch once on mount
+      }, []); 
 
       const handleAddWishlistItem = async (e) => {
         e.preventDefault();
@@ -52,8 +51,8 @@
           };
           const res = await axios.post('http://localhost:5000/api/wishlist/add', { productName: newProductName }, config);
           console.log(res.data);
-          setWishlistItems([...wishlistItems, res.data.item]); // Add new item to state
-          setNewProductName(''); // Clear input
+          setWishlistItems([...wishlistItems, res.data.item]); 
+          setNewProductName(''); 
           alert('Product added to wishlist!');
         } catch (err) {
           console.error(err.response ? err.response.data : err.message);
@@ -68,7 +67,6 @@
           return;
         }
 
-        // Optional: Confirm before deleting
         if (!window.confirm('Are you sure you want to remove this item from the wishlist?')) {
           return;
         }
@@ -80,7 +78,7 @@
             }
           };
           await axios.delete(`http://localhost:5000/api/wishlist/remove/${id}`, config);
-          setWishlistItems(wishlistItems.filter(item => item._id !== id)); // Remove from state
+          setWishlistItems(wishlistItems.filter(item => item._id !== id)); 
           alert('Item removed from wishlist.');
         } catch (err) {
           console.error(err.response ? err.response.data : err.message);
@@ -97,7 +95,6 @@
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Wishlist</h1>
 
-          {/* Add to Wishlist Form */}
           <div className="bg-white p-6 rounded-lg shadow-md mb-8">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Add Item to Wishlist</h2>
             <form onSubmit={handleAddWishlistItem} className="flex flex-col sm:flex-row gap-4">
@@ -119,7 +116,7 @@
             {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">{error}</div>}
           </div>
 
-          {/* All Wishlist Items Table */}
+  
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">All Wishlist Items</h2>
             {wishlistItems.length === 0 ? (

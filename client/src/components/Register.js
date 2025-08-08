@@ -1,4 +1,4 @@
-// client/src/components/Register.js
+
 
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -11,7 +11,7 @@ const Register = () => {
     password: '',
     role: 'buyer'
   });
-  const [errorMessage, setErrorMessage] = useState(''); // State to hold error messages
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -22,23 +22,23 @@ const Register = () => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    setErrorMessage(''); // Clear previous error messages
+    setErrorMessage(''); 
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', formData);
       console.log(res.data);
-      // Redirect to login or dashboard after successful registration
+   
       navigate('/login');
     } catch (err) {
-      // Check if err.response exists before accessing its properties
+
       if (err.response) {
         console.error(err.response.data);
         setErrorMessage(err.response.data.msg || 'Registration failed. Please try again.');
       } else if (err.request) {
-        // The request was made but no response was received
+
         console.error(err.request);
         setErrorMessage('No response from server. Please check your network connection or server status.');
       } else {
-        // Something happened in setting up the request that triggered an Error
+   
         console.error('Error', err.message);
         setErrorMessage('An unexpected error occurred. Please try again.');
       }

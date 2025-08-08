@@ -1,4 +1,4 @@
-    // server/models/Product.js
+
 
     const mongoose = require('mongoose');
 
@@ -23,7 +23,7 @@
         type: String,
         required: true
       },
-      // Assuming a seller uploads products
+
       seller: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

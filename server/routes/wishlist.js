@@ -1,13 +1,8 @@
-    // server/routes/wishlist.js
-
     const express = require('express');
     const router = express.Router();
-    const authMiddleware = require('../middleware/authMiddleware'); // Re-use auth middleware
+    const authMiddleware = require('../middleware/authMiddleware'); 
     const Wishlist = require('../models/Wishlist');
 
-    // @route   POST /api/wishlist/add
-    // @desc    Add a product name to the wishlist
-    // @access  Private
     router.post('/add', authMiddleware, async (req, res) => {
       const { productName } = req.body;
 
@@ -30,12 +25,9 @@
       }
     });
 
-    // @route   GET /api/wishlist/all
-    // @desc    Get all wishlist items from all users
-    // @access  Public (as requested, to show all items by all users)
     router.get('/all', async (req, res) => {
       try {
-        const allWishlistItems = await Wishlist.find().populate('user', 'name email'); // Populate user details
+        const allWishlistItems = await Wishlist.find().populate('user', 'name email'); 
         res.json(allWishlistItems);
       } catch (err) {
         console.error(err.message);
@@ -43,9 +35,6 @@
       }
     });
 
-    // @route   GET /api/wishlist/my
-    // @desc    Get current user's wishlist items
-    // @access  Private
     router.get('/my', authMiddleware, async (req, res) => {
       try {
         const myWishlistItems = await Wishlist.find({ user: req.user.id }).populate('user', 'name email');
@@ -56,9 +45,6 @@
       }
     });
 
-    // @route   DELETE /api/wishlist/remove/:id
-    // @desc    Remove an item from the wishlist
-    // @access  Private
     router.delete('/remove/:id', authMiddleware, async (req, res) => {
       try {
         const wishlistItem = await Wishlist.findById(req.params.id);
@@ -67,12 +53,12 @@
           return res.status(404).json({ msg: 'Wishlist item not found' });
         }
 
-        // Ensure user owns the wishlist item
+     
         if (wishlistItem.user.toString() !== req.user.id) {
           return res.status(401).json({ msg: 'User not authorized' });
         }
 
-        await wishlistItem.deleteOne(); // Use deleteOne()
+        await wishlistItem.deleteOne(); 
         res.json({ msg: 'Wishlist item removed' });
 
       } catch (err) {

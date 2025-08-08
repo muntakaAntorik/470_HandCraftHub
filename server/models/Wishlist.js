@@ -1,5 +1,3 @@
-    // server/models/Wishlist.js
-
     const mongoose = require('mongoose');
 
     const WishlistSchema = new mongoose.Schema({
@@ -8,7 +6,7 @@
         ref: 'User',
         required: true
       },
-      productName: { // Storing the product name directly as requested
+      productName: {
         type: String,
         required: true
       },

@@ -1,4 +1,3 @@
-    // client/src/components/LandingPage.js
 
     import React from 'react';
     import { Link } from 'react-router-dom';
@@ -11,7 +10,6 @@
       const { isLoggedIn, logout, token } = useAuth();
       const navigate = useNavigate();
 
-      // Dummy product data for demonstration
       const products = [
         { id: '65f6c82a7a4b1c2d3e4f5a6b', name: 'Handcrafted Wooden Bowl', price: 40.00, imageUrl: 'https://placehold.co/300x200/E0E7FF/4338CA?text=Wooden+Bowl', rating: 4.5 },
         { id: '65f6c82a7a4b1c2d3e4f5a6c', name: 'Knitted Scarf', price: 135.00, imageUrl: 'https://placehold.co/300x200/D1FAE5/065F46?text=Knitted+Scarf', rating: 4.8 },
@@ -80,7 +78,7 @@
 
       return (
         <div className="min-h-screen bg-gray-100 font-inter">
-          {/* Header */}
+        
           <header className="bg-white shadow-md py-4 px-6 md:px-10 flex items-center justify-between flex-wrap rounded-b-lg">
             <div className="flex items-center space-x-4">
               <Link to="/" className="text-2xl font-bold text-indigo-700">HandCraftHub</Link>
@@ -123,9 +121,9 @@
             </nav>
           </header>
 
-          {/* Main Content */}
+    
           <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
-            {/* Sidebar for Categories */}
+ 
             <aside className="w-full lg:w-1/4 bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4 text-gray-800">Categories</h2>
               <ul className="space-y-2">
@@ -142,7 +140,7 @@
               </ul>
             </aside>
 
-            {/* Product Grid */}
+  
             <main className="w-full lg:w-3/4">
               <h2 className="text-2xl font-bold mb-6 text-gray-800">Featured Products</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -171,7 +169,7 @@
                           Add to Cart
                         </button>
                         <button
-                          onClick={() => handleAddToWishlist(product.name)} // Pass product name to wishlist
+                          onClick={() => handleAddToWishlist(product.name)}
                           className="flex-1 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-200 shadow-md text-sm"
                         >
                           Add to Wishlist
@@ -184,7 +182,7 @@
             </main>
           </div>
 
-          {/* Footer (Optional, but good for completeness) */}
+
           <footer className="bg-gray-800 text-white py-6 mt-10 rounded-t-lg">
             <div className="container mx-auto text-center">
               <p>&copy; {new Date().getFullYear()} HandCraftHub. All rights reserved.</p>

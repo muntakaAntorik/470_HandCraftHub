@@ -1,4 +1,4 @@
-    // server/server.js
+  
 
     const express = require('express');
     const mongoose = require('mongoose');
@@ -17,19 +17,15 @@
       .then(() => console.log('MongoDB connected successfully'))
       .catch(err => console.error('MongoDB connection error:', err));
 
-    // Define Routes
+    // Routes
     app.use('/api/auth', require('./routes/auth'));
     app.use('/api/cart', require('./routes/cart'));
-    app.use('/api/wishlist', require('./routes/wishlist')); // Add wishlist routes
-    // app.use('/api/products', require('./routes/product')); // Product routes will be added later
+    app.use('/api/wishlist', require('./routes/wishlist')); 
 
-    // Basic route to test the server
     app.get('/', (req, res) => {
       res.send('API is running...');
     });
 
-    // Start the server
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
-    

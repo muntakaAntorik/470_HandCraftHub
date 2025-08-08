@@ -1,19 +1,18 @@
-// client/src/components/Login.js
 
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import useAuth hook
+import { useAuth } from '../context/AuthContext'; 
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [errorMessage, setErrorMessage] = useState(''); // State to hold error messages
+  const [errorMessage, setErrorMessage] = useState(''); 
 
   const navigate = useNavigate();
-  const { login } = useAuth(); // Get the login function from AuthContext
+  const { login } = useAuth(); 
 
   const { email, password } = formData;
 
@@ -22,16 +21,15 @@ const Login = () => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    setErrorMessage(''); // Clear previous error messages
+    setErrorMessage(''); 
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', formData);
-      console.log(res.data); // This will contain the JWT token
+      console.log(res.data); 
 
-      // Call the login function from AuthContext to set the token and user state
+    
       login(res.data.token);
 
-      // Redirect to a dashboard or home page after successful login
-      navigate('/'); // Redirect to home page
+      navigate('/');
     } catch (err) {
       if (err.response) {
         console.error(err.response.data);
