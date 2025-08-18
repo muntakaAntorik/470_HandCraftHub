@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext.js'; // Ensure correct import path
+import { useAuth } from '../context/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 
 const OrderHistoryPage = () => {
@@ -14,7 +14,7 @@ const OrderHistoryPage = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login'); // Redirect to login if not logged in
+      navigate('/login');
       return;
     }
 
@@ -70,7 +70,7 @@ const OrderHistoryPage = () => {
               </span>
             </div>
             <p className="text-gray-600 mb-2">Order Date: {new Date(order.createdAt).toLocaleDateString()}</p>
-            <p className="text-gray-600 mb-2">Total Price: <span className="font-bold">${order.totalPrice.toFixed(2)}</span></p>
+            <p className="text-gray-600 mb-2">Total Price: <span className="font-bold">৳{order.totalPrice.toFixed(2)}</span></p>
             <p className="text-gray-600 mb-4">Payment Method: {order.paymentMethod}</p>
 
             <h3 className="text-lg font-medium text-gray-800 mb-3">Items:</h3>
@@ -85,7 +85,7 @@ const OrderHistoryPage = () => {
                   />
                   <div>
                     <p className="font-semibold text-gray-800">{item.name}</p>
-                    <p className="text-gray-600 text-sm">${item.price.toFixed(2)} x {item.quantity}</p>
+                    <p className="text-gray-600 text-sm">৳{item.price.toFixed(2)} x {item.quantity}</p>
                   </div>
                 </div>
               ))}

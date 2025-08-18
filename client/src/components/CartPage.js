@@ -14,7 +14,7 @@ const CartPage = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login'); // Redirect to login if not logged in
+      navigate('/login');
       return;
     }
 
@@ -76,7 +76,6 @@ const CartPage = () => {
       alert('Your cart is empty. Add items before proceeding to checkout.');
       return;
     }
-    // Navigate to the new checkout form, passing the current cart data
     navigate('/checkout', { state: { cart: cart } });
   };
 
@@ -109,7 +108,7 @@ const CartPage = () => {
               />
               <div className="flex-grow text-center md:text-left">
                 <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
-                <p className="text-indigo-600 text-md font-bold">${item.price.toFixed(2)}</p>
+                <p className="text-indigo-600 text-md font-bold">৳{item.price.toFixed(2)}</p>
                 <div className="flex items-center justify-center md:justify-start mt-2">
                   <button
                     onClick={() => updateQuantity(item.product._id || item.product, item.quantity - 1)}
@@ -136,9 +135,9 @@ const CartPage = () => {
           ))}
         </div>
         <div className="mt-8 text-right border-t pt-4">
-          <h2 className="text-2xl font-bold text-gray-900">Total: ${totalAmount}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Total: ৳{totalAmount}</h2>
           <button
-            onClick={handleProceedToCheckout} // Updated to redirect to checkout form
+            onClick={handleProceedToCheckout}
             className="mt-4 bg-green-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition-colors duration-200"
           >
             Proceed to Checkout

@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product'); // Import Product model
+const Product = require('../models/Product'); // Ensure Product model is correctly imported
 
 // @route   GET /api/products
 // @desc    Get all products (with optional search/category filter)
@@ -21,14 +21,16 @@ router.get('/', async (req, res) => {
             }
           : {};
 
-    const category = req.query.category // Check for category query parameter
+    // This is the part that handles category filtering
+    const category = req.query.category 
       ? {
-              category: req.query.category,
+              category: req.query.category, // Filter by the provided category
             }
           : {};
 
     // Find products matching both keyword and category filters
-    const products = await Product.find({ ...keyword, ...category }); // Combined filters
+    // If no keyword or category is provided, it will fetch all products.
+    const products = await Product.find({ ...keyword, ...category });
     console.log(`Backend: Found ${products.length} products.`);
     res.json(products); // Send the products as a JSON response
 

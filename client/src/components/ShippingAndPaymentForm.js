@@ -3,27 +3,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext.js'; // Ensure correct import path
+import { useAuth } from '../context/AuthContext.js';
 
 const ShippingAndPaymentForm = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // To get cart data passed from CartPage
-  const { token, isLoggedIn } = useAuth(); // Get token and login status from AuthContext
+  const location = useLocation();
+  const { token, isLoggedIn } = useAuth();
 
-  // State to hold form data
   const [formData, setFormData] = useState({
     address: '',
-    phoneNumber: '', // Only address and phone number
-    paymentMethod: 'Cash on Delivery' // Default payment method
+    phoneNumber: '',
+    paymentMethod: 'Cash on Delivery'
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // Effect to load cart items from location state
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login'); // Redirect if not logged in
+      navigate('/login');
       return;
     }
 
@@ -32,7 +30,6 @@ const ShippingAndPaymentForm = () => {
       const calculatedTotal = location.state.cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
       setTotalPrice(calculatedTotal);
     } else {
-      // If no cart data, redirect back to cart page or home
       alert('No cart data found. Please go back to your cart.');
       navigate('/cart');
     }
@@ -51,7 +48,6 @@ const ShippingAndPaymentForm = () => {
       return;
     }
 
-    // Prepare order details for backend
     const orderDetails = {
       orderItems: cartItems.map(item => ({
         product: item.product._id || item.product,
@@ -62,12 +58,12 @@ const ShippingAndPaymentForm = () => {
       })),
       shippingAddress: {
         address: formData.address,
-        phoneNumber: formData.phoneNumber // Only address and phone number
+        phoneNumber: formData.phoneNumber
       },
       paymentMethod: formData.paymentMethod,
-      taxPrice: 0, // Placeholder, calculate if needed
-      shippingPrice: 5, // Placeholder, calculate if needed
-      totalPrice: (totalPrice + 5).toFixed(2) // Total + shipping
+      taxPrice: 0,
+      shippingPrice: 5,
+      totalPrice: (totalPrice + 5).toFixed(2)
     };
 
     try {
@@ -77,10 +73,9 @@ const ShippingAndPaymentForm = () => {
           'Content-Type': 'application/json'
         }
       };
-      const res = await axios.post('http://localhost:5000/api/orders', orderDetails, config);
-      console.log('Order placed successfully:', res.data);
+      await axios.post('http://localhost:5000/api/orders', orderDetails, config);
       alert('Order placed successfully! You will be redirected to your order history.');
-      navigate('/myorders'); // Redirect to order history
+      navigate('/myorders');
     } catch (err) {
       console.error('Error placing order:', err.response ? err.response.data : err.message);
       setErrorMessage(err.response && err.response.data && err.response.data.msg
@@ -114,11 +109,10 @@ const ShippingAndPaymentForm = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
-          {/* Removed City, Postal Code, Country fields */}
           <div>
             <label htmlFor="phoneNumber" className="block text-gray-700 text-sm font-bold mb-2">Phone Number:</label>
             <input
-              type="tel" // Use type="tel" for phone numbers
+              type="tel"
               id="phoneNumber"
               name="phoneNumber"
               value={formData.phoneNumber}
@@ -145,19 +139,19 @@ const ShippingAndPaymentForm = () => {
             </select>
           </div>
 
-          {/* Order Summary (Optional, but good for user confirmation) */}
+          {/* Order Summary */}
           <h2 className="text-xl font-semibold text-gray-800 border-b pb-2 mb-4 mt-6">Order Summary</h2>
           <div className="flex justify-between text-lg font-medium text-gray-800">
             <span>Subtotal:</span>
-            <span>${totalPrice.toFixed(2)}</span>
+            <span>৳{totalPrice.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-lg font-medium text-gray-800">
             <span>Shipping:</span>
-            <span>$5.00</span> {/* Hardcoded for now */}
+            <span>৳5.00</span>
           </div>
           <div className="flex justify-between text-2xl font-bold text-gray-900 border-t pt-2 mt-2">
             <span>Total:</span>
-            <span>${(totalPrice + 5).toFixed(2)}</span>
+            <span>৳{(totalPrice + 5).toFixed(2)}</span>
           </div>
 
           <button

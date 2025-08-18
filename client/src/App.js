@@ -10,6 +10,7 @@ import WishlistPage from './components/WishlistPage.js';
 import OrderHistoryPage from './components/OrderHistoryPage.js';
 import ShippingAndPaymentForm from './components/ShippingAndPaymentForm.js';
 import CategoryPage from './components/CategoryPage.js'; // Import new component
+import ProductDetailPage from './components/ProductDetailPage.js'; // Import ProductDetailPage
 import './App.css';
 import './index.css';
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/myorders" element={<OrderHistoryPage />} />
         <Route path="/checkout" element={<ShippingAndPaymentForm />} />
         <Route path="/category/:categoryName" element={<CategoryPage />} /> {/* New route for categories */}
+        <Route path="/product/:id" element={<ProductDetailPage />} /> {/* Route for product detail page */}
         {/* Add other routes here as you create more components */}
       </Routes>
     </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Search, ShoppingCart, User, Heart } from 'lucide-react';
+import { Home, Search, ShoppingCart, User, Heart, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -12,11 +12,10 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState(null);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [productError, setProductError] = useState('');
 
-  // Effect to fetch products when the component mounts or search term changes
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -47,6 +46,7 @@ const LandingPage = () => {
     return () => clearTimeout(debounceFetch);
   }, [searchTerm]);
 
+  // These category names MUST exactly match the 'category' field values in your MongoDB products
   const categories = [
     'Home decor', 'Arts', 'Clothing', 'Painting', 'Accessories', 'Jewelry', 'Candles & Soap'
   ];
@@ -163,7 +163,6 @@ const LandingPage = () => {
           <ul className="space-y-2">
             {categories.map((category, index) => (
               <li key={index}>
-                {/* Updated Link to navigate to /category/:categoryName */}
                 <Link
                   to={`/category/${category.toLowerCase().replace(/\s/g, '-')}`}
                   className="block text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md transition-colors duration-200"
@@ -183,25 +182,37 @@ const LandingPage = () => {
               <div className="text-center py-8">Loading products...</div>
             ) : productError ? (
               <div className="text-center py-8 text-red-600">{productError}</div>
-            ) : displayedProducts.length === 0 ? (
+            ) : displayedProducts === null || displayedProducts.length === 0 ? (
               <div className="text-center py-8 text-gray-600">No products found.</div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
                 {displayedProducts.map(product => (
                   <div key={product._id} className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-48 object-cover"
-                      onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/300x200/cccccc/333333?text=Image+Not+Found'; }}
-                    />
+                    <Link to={`/product/${product._id}`}>
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="w-full h-48 object-cover"
+                        onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/300x200/cccccc/333333?text=Image+Not+Found'; }}
+                      />
+                    </Link>
                     <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 truncate">{product.name}</h3>
+                      <h3 className="text-lg font-semibold text-gray-800 truncate">
+                        <Link to={`/product/${product._id}`} className="hover:text-indigo-600">
+                          {product.name}
+                        </Link>
+                      </h3>
                       <div className="flex items-center justify-between mt-2">
-                        <p className="text-indigo-600 text-xl font-bold">${product.price.toFixed(2)}</p>
+                        <p className="text-indigo-600 text-xl font-bold">৳{product.price.toFixed(2)}</p>
                         <div className="flex items-center text-yellow-500">
-                          <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.683-1.538 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.783.565-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.92 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z"></path></svg>
-                          <span className="text-gray-600 text-sm">{product.rating}</span>
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              size={16}
+                              className={i < product.rating ? 'fill-current' : 'text-gray-300'}
+                            />
+                          ))}
+                          <span className="ml-1 text-gray-600 text-sm">({product.numReviews})</span>
                         </div>
                       </div>
                       <div className="flex space-x-2 mt-4">
@@ -223,7 +234,7 @@ const LandingPage = () => {
                 ))}
               </div>
             )}
-          </> {/* Closing React Fragment */}
+          </>
         </main>
       </div>
 
