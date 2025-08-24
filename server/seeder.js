@@ -26,7 +26,7 @@ const importData = async () => {
     const sellerId = sellerUser._id;
     console.log(`Using seller ID: ${sellerId}`);
 
-    await Product.deleteMany(); 
+    await Product.deleteMany(); // Clears existing products
     console.log('Existing products cleared.');
 
     const products = [
@@ -50,7 +50,7 @@ const importData = async () => {
       description: `A beautiful ${p.name.toLowerCase()}, handcrafted with care.`,
       price: p.price,
       imageUrl: p.imageUrl,
-      category: p.category, 
+      category: p.category,
       seller: sellerId,
       rating: p.rating,
       numReviews: p.numReviews,

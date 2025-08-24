@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext.js'; // Ensure correct import path
-import { ShoppingCart, Heart, Star } from 'lucide-react'; // Icons for product cards
+import { useAuth } from '../context/AuthContext.js';
+import { ShoppingCart, Heart, Star } from 'lucide-react';
 
 const CategoryPage = () => {
-  const { categoryName } = useParams(); // Get category name from URL parameter
+  const { categoryName } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, token } = useAuth();
 
@@ -15,13 +15,23 @@ const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Effect to fetch products for the specific category
+  // Define a set of appealing background colors for product cards
+  const productCardColors = [
+    'bg-gradient-to-br from-blue-50 to-blue-100',
+    'bg-gradient-to-br from-green-50 to-green-100',
+    'bg-gradient-to-br from-red-50 to-red-100',
+    'bg-gradient-to-br from-yellow-50 to-yellow-100',
+    'bg-gradient-to-br from-purple-50 to-purple-100',
+    'bg-gradient-to-br from-pink-50 to-pink-100',
+    'bg-gradient-to-br from-indigo-50 to-indigo-100',
+    'bg-gradient-to-br from-teal-50 to-teal-100'
+  ];
+
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       try {
         setLoading(true);
         setError('');
-        // Make API call to fetch products, filtering by category
         const res = await axios.get(`http://localhost:5000/api/products?category=${categoryName}`);
         setProducts(res.data);
         setLoading(false);
@@ -33,7 +43,7 @@ const CategoryPage = () => {
     };
 
     fetchCategoryProducts();
-  }, [categoryName]); // Re-fetch products whenever the categoryName in the URL changes
+  }, [categoryName]);
 
   const handleAddToCart = async (productId) => {
     if (!isLoggedIn) {
@@ -81,7 +91,7 @@ const CategoryPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 font-inter p-4">
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center capitalize">
-        Products in {categoryName.replace(/-/g, ' ')} {/* Display category name */}
+        Products in {categoryName.replace(/-/g, ' ')}
       </h1>
 
       {loading ? (
@@ -92,9 +102,12 @@ const CategoryPage = () => {
         <div className="text-center py-8 text-gray-600">No products found in this category.</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map(product => (
-            <div key={product._id} className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
-              <Link to={`/product/${product._id}`}> {/* Link to Product Detail Page */}
+          {products.map((product, index) => (
+            <div
+              key={product._id}
+              className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 ${productCardColors[index % productCardColors.length]}`}
+            >
+              <Link to={`/product/${product._id}`}>
                 <img
                   src={product.imageUrl}
                   alt={product.name}
@@ -124,13 +137,13 @@ const CategoryPage = () => {
                 <div className="flex space-x-2 mt-4">
                   <button
                     onClick={() => handleAddToCart(product._id)}
-                    className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors duration-200 shadow-md text-sm"
+                    className="flex-1 bg-gradient-to-r from-indigo-500 to-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:from-indigo-600 hover:to-blue-600 transition-all duration-200 text-sm"
                   >
                     <ShoppingCart size={16} className="inline mr-1" /> Add to Cart
                   </button>
                   <button
                     onClick={() => handleAddToWishlist(product.name)}
-                    className="flex-1 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-200 shadow-md text-sm"
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md shadow-md hover:from-purple-600 hover:to-pink-600 transition-all duration-200 text-sm"
                   >
                     <Heart size={16} className="inline mr-1" /> Wishlist
                   </button>

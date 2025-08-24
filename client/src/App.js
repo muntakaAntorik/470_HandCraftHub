@@ -9,8 +9,11 @@ import CartPage from './components/CartPage.js';
 import WishlistPage from './components/WishlistPage.js';
 import OrderHistoryPage from './components/OrderHistoryPage.js';
 import ShippingAndPaymentForm from './components/ShippingAndPaymentForm.js';
-import CategoryPage from './components/CategoryPage.js'; // Import new component
-import ProductDetailPage from './components/ProductDetailPage.js'; // Import ProductDetailPage
+import CategoryPage from './components/CategoryPage.js';
+import ProductDetailPage from './components/ProductDetailPage.js';
+import SellerDashboard from './components/SellerDashboard.js'; // Ensure SellerDashboard is imported
+import ProductForm from './components/ProductForm.js';     // Ensure ProductForm is imported
+import AdminPanel from './components/AdminPanel.js';       // Ensure AdminPanel is imported
 import './App.css';
 import './index.css';
 
@@ -25,8 +28,14 @@ function App() {
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/myorders" element={<OrderHistoryPage />} />
         <Route path="/checkout" element={<ShippingAndPaymentForm />} />
-        <Route path="/category/:categoryName" element={<CategoryPage />} /> {/* New route for categories */}
-        <Route path="/product/:id" element={<ProductDetailPage />} /> {/* Route for product detail page */}
+        <Route path="/category/:categoryName" element={<CategoryPage />} />
+        <Route path="/product/:id" element={<ProductDetailPage />} />
+        {/* Seller Routes */}
+        <Route path="/seller/dashboard" element={<SellerDashboard />} />
+        <Route path="/seller/add-product" element={<ProductForm />} />
+        <Route path="/seller/edit-product/:id" element={<ProductForm />} />
+        {/* Admin Routes */}
+        <Route path="/admin/panel" element={<AdminPanel />} /> {/* Corrected route for AdminPanel */}
         {/* Add other routes here as you create more components */}
       </Routes>
     </div>
