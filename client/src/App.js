@@ -11,9 +11,13 @@ import OrderHistoryPage from './components/OrderHistoryPage.js';
 import ShippingAndPaymentForm from './components/ShippingAndPaymentForm.js';
 import CategoryPage from './components/CategoryPage.js';
 import ProductDetailPage from './components/ProductDetailPage.js';
-import SellerDashboard from './components/SellerDashboard.js'; // Ensure SellerDashboard is imported
-import ProductForm from './components/ProductForm.js';     // Ensure ProductForm is imported
-import AdminPanel from './components/AdminPanel.js';       // Ensure AdminPanel is imported
+import AdminPanel from './components/AdminPanel.js';
+import SellerDashboard from './components/SellerDashboard.js';
+import ProductForm from './components/ProductForm.js';
+import AboutUsPage from './components/AboutUsPage.js';
+import TermsAndConditionsPage from './components/TermsAndConditionsPage.js'; // Import new component
+import FeedbackForm from './components/FeedbackForm.js'; // Import new component
+import AdminInsights from './components/AdminInsights.js'; // Import new component
 import './App.css';
 import './index.css';
 
@@ -30,13 +34,14 @@ function App() {
         <Route path="/checkout" element={<ShippingAndPaymentForm />} />
         <Route path="/category/:categoryName" element={<CategoryPage />} />
         <Route path="/product/:id" element={<ProductDetailPage />} />
-        {/* Seller Routes */}
+        <Route path="/admin/panel" element={<AdminPanel />} />
         <Route path="/seller/dashboard" element={<SellerDashboard />} />
         <Route path="/seller/add-product" element={<ProductForm />} />
         <Route path="/seller/edit-product/:id" element={<ProductForm />} />
-        {/* Admin Routes */}
-        <Route path="/admin/panel" element={<AdminPanel />} /> {/* Corrected route for AdminPanel */}
-        {/* Add other routes here as you create more components */}
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/terms" element={<TermsAndConditionsPage />} />
+        <Route path="/feedback" element={<FeedbackForm />} /> {/* New route for feedback form */}
+        <Route path="/admin/insights" element={<AdminInsights />} /> {/* New route for admin feedback panel */}
       </Routes>
     </div>
   );

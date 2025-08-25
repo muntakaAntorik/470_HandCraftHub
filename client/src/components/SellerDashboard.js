@@ -31,7 +31,7 @@ const SellerDashboard = () => {
           setError('');
           const config = {
             headers: {
-              'x-auth-token': token
+              'x-auth-token': token // This line is crucial for authentication
             }
           };
           // Fetch products specifically for the logged-in seller
@@ -40,7 +40,7 @@ const SellerDashboard = () => {
           setLoading(false);
         } catch (err) {
           console.error('Error fetching seller products:', err);
-          setError('Failed to load your products. Please try again.');
+          setError(err.response ? err.response.data.msg : 'Failed to load your products. Please try again.');
           setLoading(false);
         }
       }
@@ -57,7 +57,7 @@ const SellerDashboard = () => {
     try {
       const config = {
         headers: {
-          'x-auth-token': token
+          'x-auth-token': token // This line is crucial for authentication
         }
       };
       await axios.delete(`http://localhost:5000/api/products/${productId}`, config);
@@ -75,6 +75,10 @@ const SellerDashboard = () => {
 
   if (error) {
     return <div className="text-center py-8 text-red-600">{error}</div>;
+  }
+
+  if (!user || user.role !== 'seller') {
+    return <div className="text-center py-8 text-gray-600">Access Denied: Not a seller.</div>;
   }
 
   return (

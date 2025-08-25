@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext.js';
 import { useNavigate, Link } from 'react-router-dom';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, LayoutDashboard, Database } from 'lucide-react'; // Import new icon
 
 const AdminPanel = () => {
   const { isLoggedIn, user, token } = useAuth();
@@ -15,20 +15,16 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Redirect if not logged in or not an admin
   useEffect(() => {
-    console.log('AdminPanel: Checking auth status. isLoggedIn:', isLoggedIn, 'user:', user);
     if (!isLoggedIn || !user || user.role !== 'admin') {
       alert('You must be logged in as an admin to access this page.');
       navigate('/login');
     }
   }, [isLoggedIn, user, navigate]);
 
-  // Fetch all products and users for the admin
   useEffect(() => {
     const fetchAdminData = async () => {
       if (user && user.role === 'admin') {
-        console.log('AdminPanel: User is admin, fetching data...');
         try {
           setLoading(true);
           setError('');
@@ -46,16 +42,15 @@ const AdminPanel = () => {
           setProducts(productsRes.data);
           setUsers(usersRes.data);
           setLoading(false);
-          console.log('AdminPanel: Data fetched successfully. Products:', productsRes.data.length, 'Users:', usersRes.data.length);
         } catch (err) {
-          console.error('AdminPanel: Error fetching admin data:', err.response ? err.response.data : err.message);
-          setError(err.response ? err.response.data.msg : 'Failed to load admin data. Please check server logs.');
+          console.error('Error fetching admin data:', err);
+          setError('Failed to load admin data. Please try again.');
           setLoading(false);
         }
       }
     };
     fetchAdminData();
-  }, [user, token]); // Re-fetch when user or token changes
+  }, [user, token]);
 
   const handleDeleteProduct = async (productId) => {
     if (!window.confirm('Are you sure you want to delete this product?')) {
@@ -72,7 +67,7 @@ const AdminPanel = () => {
       alert('Product deleted successfully!');
       setProducts(products.filter(p => p._id !== productId));
     } catch (err) {
-      console.error('AdminPanel: Error deleting product:', err.response ? err.response.data : err.message);
+      console.error('Error deleting product:', err.response ? err.response.data : err.message);
       setError(err.response ? err.response.data.msg : 'Failed to delete product.');
     }
   };
@@ -92,7 +87,7 @@ const AdminPanel = () => {
       alert('User deleted successfully!');
       setUsers(users.filter(u => u._id !== userId));
     } catch (err) {
-      console.error('AdminPanel: Error deleting user:', err.response ? err.response.data : err.message);
+      console.error('Error deleting user:', err.response ? err.response.data : err.message);
       setError(err.response ? err.response.data.msg : 'Failed to delete user.');
     }
   };
@@ -105,7 +100,6 @@ const AdminPanel = () => {
     return <div className="text-center py-8 text-red-600">{error}</div>;
   }
 
-  // Ensure user is an admin before rendering the panel content
   if (!user || user.role !== 'admin') {
     return <div className="text-center py-8 text-gray-600">Access Denied: Not an administrator.</div>;
   }
@@ -113,6 +107,16 @@ const AdminPanel = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Admin Panel</h1>
+
+      {/* Admin actions buttons */}
+      <div className="flex justify-center mb-8 space-x-4">
+        <Link
+          to="/admin/insights"
+          className="bg-purple-600 text-white py-2 px-4 rounded-md shadow-lg hover:bg-purple-700 transition-colors duration-200 flex items-center"
+        >
+          <Database size={20} className="mr-2" /> View Feedback Insights
+        </Link>
+      </div>
 
       {/* Product Management Section */}
       <div className="bg-white rounded-lg shadow-xl p-6 mb-8 border border-gray-200">
@@ -191,7 +195,6 @@ const AdminPanel = () => {
           </table>
         </div>
       </div>
-
     </div>
   );
 };

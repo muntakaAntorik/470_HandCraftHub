@@ -24,7 +24,8 @@ app.use('/api/cart', require('./routes/cart'));
 app.use('/api/wishlist', require('./routes/wishlist'));
 app.use('/api/orders', require('./routes/order'));
 app.use('/api/reviews', require('./routes/review'));
-app.use('/api/users', require('./routes/user')); // Add user routes
+app.use('/api/users', require('./routes/user'));
+app.use('/api/feedback', require('./routes/feedback')); // Add feedback routes
 
 // Basic route to test the server
 app.get('/', (req, res) => {
@@ -35,3 +36,6 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+

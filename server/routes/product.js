@@ -2,10 +2,10 @@
 
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware'); // For general authentication
 const Product = require('../models/Product');
-const User = require('../models/User');
-const mongoose = require('mongoose');
+const User = require('../models/User'); // To verify seller role
+const mongoose = require('mongoose'); // To use ObjectId
 
 // Middleware to check if the user is a seller (used for seller-specific routes)
 const sellerAuthMiddleware = (req, res, next) => {
@@ -56,6 +56,8 @@ router.get('/', async (req, res) => {
 // @access  Private (Seller only)
 router.get('/seller/:sellerId', authMiddleware, sellerAuthMiddleware, async (req, res) => {
   try {
+    // Crucial fix: Ensure the logged-in user's ID matches the sellerId in the URL parameter
+    // req.user.id is a string, req.params.sellerId is also a string
     if (req.user.id !== req.params.sellerId) {
       return res.status(401).json({ msg: 'Not authorized to view these products' });
     }
@@ -106,7 +108,7 @@ router.post('/', authMiddleware, sellerAuthMiddleware, async (req, res) => {
       imageUrl,
       category,
       countInStock: Number(countInStock),
-      seller: req.user.id,
+      seller: req.user.id, // Assign the logged-in user as the seller
       rating: 0,
       numReviews: 0,
     });
@@ -132,6 +134,7 @@ router.put('/:id', authMiddleware, sellerAuthMiddleware, async (req, res) => {
       return res.status(404).json({ msg: 'Product not found' });
     }
 
+    // Ensure the logged-in user is the product's seller
     if (product.seller.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'Not authorized to update this product' });
     }
